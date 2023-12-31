@@ -4,10 +4,6 @@ from selenium.webdriver.firefox.options import Options
 import time
 import os
 import vonage
-from nexmo import Client, Sms
-
-
-print("hello world")
 
 url = 'https://studentaid.gov/h/apply-for-aid/fafsa'
 
