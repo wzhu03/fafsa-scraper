@@ -14,33 +14,36 @@ driver = webdriver.Firefox(options=options)
 client = vonage.Client(key=os.environ['NEXMO_API_KEY'], secret=os.environ['NEXMO_API_SECRET'])
 sms = vonage.Sms(client)
 
+des_button = "Start New Form"
 
 while True:
- driver.get(url)
+  driver.get(url)
 
- clock = time.time()
- ctime = time.ctime(clock)
+  clock = time.time()
+  ctime = time.ctime(clock)
 
- time.sleep(5)
+  time.sleep(5)
 
- html = driver.page_source
+  html = driver.page_source
 
- soup = BeautifulSoup(html, 'html.parser')
+  soup = BeautifulSoup(html, 'html.parser')
 
- buttons = soup.find_all('div', {'class': 'fsa-button'})
+  buttons = soup.find_all('div', {'class': 'fsa-button'})
 
- if buttons:
-     message = "form available"
-     sms.send_message({
-        'from': 'NUMBER',
-        'to': 'NUMBER',
-        'text': "FAFSA available!"
-     })
- else:
-     message = "not available"
+  for button in buttons:
+      if button.text == des_button:
+          message = "form available"
+          sms.send_message({
+              'from': 'NUMBER',
+              'to': 'NUMBER',
+              'text': "FAFSA available!"
+          })
+          break
+  else:
+      message = "not available"
 
- print(message + " - " + ctime)
+  print(message + " - " + ctime)
 
- time.sleep(15)
+  time.sleep(300)
 
 driver.quit()
